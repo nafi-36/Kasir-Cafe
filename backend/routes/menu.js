@@ -149,6 +149,7 @@ app.delete("/:id", async (req, res) => {
         else {
             let result = await menu.findOne({ where: param })
             let oldFileName = result.image
+            
             // delete old file
             let dir = path.join(__dirname, "../image/menu", oldFileName)
             fs.unlink(dir, err => console.log(err))
@@ -206,5 +207,32 @@ app.post("/search", async (req, res) => {
         menu: result
     })
 })
+
+// GET MENU by QTY, METHOD: GET, FUNCTION: findAll
+app.get("/search/favorite", async (req, res) => {
+    try {
+        const result = await detail_transaksi.findAll({
+            attributes: [
+                'id_menu',
+                [models.sequelize.fn('sum', models.sequelize.col('qty')), 'total_penjualan']
+            ],
+            include: [{
+                model: menu,
+                as: 'menu',
+                // where: {jenis: 'Makanan'}
+                attributes: ['nama_menu']
+            }],
+            group: ['id_menu'],
+            order: [
+                [models.sequelize.fn('sum', models.sequelize.col('qty')), 'DESC']
+            ]
+        });
+        res.status(200).json({ menu: result });
+    } 
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 module.exports = app;

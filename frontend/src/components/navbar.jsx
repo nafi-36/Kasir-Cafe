@@ -1,20 +1,23 @@
 import React from 'react'
+import axios from 'axios'
 
 export default class Navbar extends React.Component {
     constructor() {
         super()
         this.state = {
             // token: "",
+            id_user: "",
             // userName: "",
             // userRole: "",
-            imageUser: "",
+            image: "",
         }
         // cek di local storage apakah ada token (sudah login)
         if (localStorage.getItem('token')) {
             // this.state.token = localStorage.getItem('token')
+            this.state.id_user = localStorage.getItem('id_user')
             // this.state.userName = localStorage.getItem('nama_user')
             // this.state.userRole = localStorage.getItem('role')
-            this.state.imageUser = localStorage.getItem('outlet_id')
+            // this.state.image = localStorage.getItem('image')
         }
         // jika tidak ada token (belum login)
         else {
@@ -31,12 +34,38 @@ export default class Navbar extends React.Component {
         window.location = "/profile"
     }
 
+    getUserId = (e) => {
+        let url = "http://localhost:9090/user/" + this.state.id_user
+
+        // axios.get(url, this.headerConfig())
+        axios.get(url)
+            .then(res => {
+                this.setState({
+                    // user: res.data.user,
+                    // nama_user: res.data.user.nama_user,
+                    // username: res.data.user.username,
+                    // password: "",
+                    // role: res.data.user.role,
+                    image: res.data.user.image
+                })
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
+    }
+
+
+    componentDidMount = () => {
+        this.getUserId()
+        this.state.image = localStorage.getItem('image')
+    }
+
     render() {
         return (
             <nav className="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                 <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                    <a className="navbar-brand brand-logo mr-5" href="/"><img src="images/logo.svg" className="mr-2" alt="logo" /></a>
-                    <a className="navbar-brand brand-logo-mini" href="/"><img src="images/logo-mini.svg" alt="logo" /></a>
+                    <a className="navbar-brand brand-logo mr-5" href="/"><img src="images/logo.png" className="mr-2" alt="logo" /></a>
+                    <a className="navbar-brand brand-logo-mini" href="/"><img src="images/logo-mini.png" alt="logo" /></a>
                 </div>
                 <div className="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                     <button className="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -105,7 +134,7 @@ export default class Navbar extends React.Component {
                         </li>
                         <li className="nav-item nav-profile dropdown">
                             <a className="nav-link dropdown-toggle" href="/" data-toggle="dropdown" id="profileDropdown">
-                                <img src="https://drh.co.id/images/profile.png" alt="profile" />
+                                <img src={"http://localhost:9090/image/user/" + this.state.image} alt="User Image" />   
                             </a>
                             <div className="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                                 <a className="dropdown-item" onClick={() => this.setting()}>

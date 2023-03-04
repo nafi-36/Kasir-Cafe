@@ -67,6 +67,7 @@ app.get("/:id", (req, res) => {
             })
         })
 })
+
 // ADD USER, METHOD: POST, FUNCTION: create
 app.post("/", upload.single("image"), (req, res) => {
     if (!req.file) {

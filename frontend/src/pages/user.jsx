@@ -312,7 +312,7 @@ export default class User extends React.Component {
                                         {this.state.users.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
-                                                <td><img src={"http://localhost:9090/image/user/" + item.image} alt="" /></td>
+                                                <td><img src={"http://localhost:9090/image/user/" + item.image} alt="User Image" /></td>
                                                 <td>{item.id_user}</td>
                                                 <td>{item.nama_user}</td>
                                                 <td>{item.username}</td>

@@ -22,12 +22,12 @@ export default class Menu extends React.Component {
             isModalOpen: false,
         }
         if (localStorage.getItem("token")) {
-            if (localStorage.getItem("role") === "Admin") {
+            // if (localStorage.getItem("role") === "Admin") {
                 this.state.token = localStorage.getItem("token")
-            } else {
-                window.alert("Anda bukan Admin")
-                window.location = "/"
-            }
+            // } else {
+            //     window.alert("Anda bukan Admin")
+            //     window.location = "/"
+            // }
             // this.state.id = localStorage.getItem("admin_id")
         } else {
             window.location = "/login"

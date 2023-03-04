@@ -217,7 +217,7 @@ export default class Sidebar extends React.Component {
                             </a>
                             <div className="collapse" id="cart">
                                 <ul className="nav flex-column sub-menu">
-                                    <li className="nav-item"> <a className="nav-link" href="/add-cart">Add Cart</a></li>
+                                    <li className="nav-item"> <a className="nav-link" href="/selectTable">Add Cart</a></li>
                                     <li className="nav-item"> <a className="nav-link" href="/cart-list">Cart List</a></li>
                                 </ul>
                             </div>

@@ -93,26 +93,6 @@ app.get("/user/:id", async (req, res) => {
     // res.json(result)
 })
 
-// GET TRANSAKSI by ID OUTLET & LUNAS, METHOD: GET, FUNCTION: findAll
-// app.get("/lunas/:outlet_id", async (req, res) => {
-//     let param = { outlet_id: req.params.outlet_id, dibayar: "Lunas" }
-//     let result = await transaksi.findAll({
-//         where: param,
-//         include: [
-//             "customer",
-//             "admin",
-//             "outlet",
-//             {
-//                 model: models.detail_transaksi,
-//                 as: "detail_transaksi",
-//                 include: ["paket"]
-//             }
-//         ],
-//         // order: [['createdAt', 'DESC']]
-//     })
-//     res.json(result)
-// })
-
 // POST TRANSAKSI, METHOD: POST, FUNCTION: create
 // POST DETAIL TRANSAKSI, METHOD: POST, FUNCTION: bulkCreate
 app.post("/", async (req, res) => {
@@ -158,58 +138,40 @@ app.post("/", async (req, res) => {
 })
 
 // UPDATE DETAIL TRANSAKSI, METHOD: POST, FUNCTION: update
-app.put("/menu/:id", (req, res) => {
-    // let param = {
-    //     id_transaksi: req.params.id
-    // }
-    // let data = {
-
-    // }
-    // if (trans === true) {
-    // detail = req.body.detail_transaksi
-    // detail.forEach(element => {
-    //     element.param = param
-    // });
-    // detail_transaksi.bulkCreate(detail)
-    //     .then(result => {
-    //         res.json({
-    //             message: "Data has been inserted"
-    //         })
-    //     })
-    //     .catch(error => {
-    //         res.json({
-    //             message: error.message
-    //         })
-    //     })
-    // } else {
-    //     message: "Data not found"
-    // }
-    // detail = req.body.detail_transaksi
-    // detail.forEach(element => {
-    //     element.param = param
-    // });
-    // detail_transaksi.bulkCreate(detail)
-    //     .then(result => {
-    //         res.json({
-    //             message: "Data has been inserted"
-    //         })
-    //     })
-    //     .catch(error => {
-    //         res.json({
-    //             message: error.message
-    //         })
-    //     })
-    // transaksi.update(data, { where: param })
-    //     .then(result => {
-    //         res.json({
-    //             message: "Data has been updated"
-    //         })
-    //     })
-    //     .catch(error => {
-    //         res.json({
-    //             message: error.message
-    //         })
-    //     })
+app.post("/detail/:id_transaksi", (req, res) => {
+    // let param = { id_transaksi: req.params.id }
+    let detail = {
+        id_transaksi: req.body.id_transaksi,
+        id_menu: req.body.id_menu,
+        harga: req.body.harga,
+        qty: req.body.qty,
+        subtotal: req.body.subtotal
+    }
+    detail_transaksi.create(detail)
+    .then(result => {
+        let lastID = result.id_transaksi
+        console.log(lastID)
+        let data = {
+            total: result.subtotal
+        }
+        transaksi.update(data, { where: { id_transaksi: lastID } })
+        // transaksi.update(data, { where: param })
+        .then(result => {
+            res.json({
+                message: "Data total has been updated"
+            })
+        })
+        .catch(error => {
+            res.json({
+                message: error.message
+            })
+        })
+    })
+    .catch(error => {
+        res.json({
+            message: error.message
+        })
+    })
 })
 
 // UPDATE STATUS TRANSAKSI, METHOD: POST, FUNCTION: update
@@ -402,5 +364,5 @@ app.post("/date", async (req, res) => {
 
 module.exports = app
 
-// async = asyncronus, untuk menjalankan data secara tdk berurutan (bisa ada yg dilewati) 
+// async = asyncronus, untuk menjalankan data  secara tdk berurutan (bisa ada yg dilewati) 
 // await = untuk menunggu proses, tambahkan await di proses yg tdk boleh dilewati

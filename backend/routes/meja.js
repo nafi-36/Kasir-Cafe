@@ -125,7 +125,7 @@ app.post("/search", async (req, res) => {
     })
 })
 
-// SEARCH MEJA by available "Yes", METHOD: POST, FUNCTION: findAll
+// SEARCH MEJA by AVAILABLE "Yes", METHOD: POST, FUNCTION: findAll
 app.post("/search/table", async (req, res) => {
     let keyword = req.body.keyword
     let result = await meja.findAll({

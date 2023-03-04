@@ -10,9 +10,9 @@ export default class MenuList extends React.Component {
                     <img src={this.props.image} className="card-img-top" alt={this.props.nama_menu} />
                     <div className="card-body">
                         <h5 className="card-title">{this.props.nama_menu}</h5><hr />
-                        <p className="card-text">{this.props.jenis}</p>
+                        <p className="card-text text-color-danger">{this.props.jenis}</p>
                         <p className="card-text">{this.props.deskripsi}</p>
-                        <p className="card-title">Price: Rp {this.props.harga},-</p>
+                        <p className="card-title">Price: Rp {this.props.harga}</p>
                         <div className="row d-flex justify-content-center mt-4">
                             <button className="btn btn-sm btn-primary m-1" onClick={this.props.onEdit}><span><Edit /> </span>Edit</button>
                             <button className="btn btn-sm btn-danger m-1" onClick={this.props.onDrop}><span><Delete /> </span>Delete</button>
