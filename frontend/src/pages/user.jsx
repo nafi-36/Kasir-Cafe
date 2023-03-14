@@ -28,15 +28,15 @@ export default class User extends React.Component {
             isModalOpen: false,
             keyword: ""
         }
+        
         if (localStorage.getItem("token")) {
-            // if (localStorage.getItem("role") === "Admin") {
-            this.state.token = localStorage.getItem("token")
-            // this.state.outletID = localStorage.getItem("outlet_id")
-            // } else {
-            // window.alert("Anda bukan Admin")
-            // window.location = "/"
-            // }
-            this.state.id = localStorage.getItem("id_user")
+            if (localStorage.getItem("role") === "Admin") {
+                this.state.token = localStorage.getItem("token")
+            } else {
+                window.alert("Anda bukan Admin")
+                window.location = "/"
+            }
+            // this.state.id = localStorage.getItem("id_user")
         } else {
             window.location = "/login"
         }
@@ -48,20 +48,6 @@ export default class User extends React.Component {
         }
         return header
     }
-
-    // getAdminOutlet = () => {
-    //     let url = "http://localhost:9000/admin/" + this.state.outletID
-
-    //     axios.get(url, this.headerConfig())
-    //         .then(res => {
-    //             this.setState({
-    //                 admins: res.data.admin
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err.message)
-    //         })
-    // }
 
     getUser = () => {
         let url = "http://localhost:9090/user"
@@ -88,35 +74,6 @@ export default class User extends React.Component {
             image: e.target.files[0]
         })
     }
-
-    // getAdminOutlet = () => {
-    //     let url = "http://localhost:9000/admin/" + this.state.outletID
-
-    //     axios.get(url, this.headerConfig())
-    //         .then(res => {
-    //             this.setState({
-    //                 admins: res.data.admin
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err.message)
-    //         })
-    // }
-
-    // getOutlet = () => {
-    //     let url = "http://localhost:9000/outlet"
-
-    //     axios.get(url, this.headerConfig())
-    //         .then(res => {
-    //             this.setState({
-    //                 outlet: res.data.outlet
-    //             })
-    //             console.log(this.state.outlet)
-    //         })
-    //         .catch(err => {
-    //             console.log(err.message)
-    //         })
-    // }
 
     handleSearch = (e) => {
         let url = "http://localhost:9090/user/search"
@@ -280,7 +237,7 @@ export default class User extends React.Component {
                 <Navbar />
                 <div className="container-fluid page-body-wrapper">
                     <Sidebar />
-                    <div className="main-panel"> 
+                    <div className="main-panel">
                         <div className="content-wrapper">
                             <h3 className="mt-0 ">Data Admin</h3>
                             <hr />
@@ -347,7 +304,7 @@ export default class User extends React.Component {
                                 {/* <Modal.Header closeButton> */}
                                 <Modal.Header>
                                     <Modal.Title>Form Admin</Modal.Title>
-                                </Modal.Header> 
+                                </Modal.Header>
                                 <Form onSubmit={e => this.saveUser(e)}>
                                     <Modal.Body>
                                         {this.state.action === "editPassword" ? (

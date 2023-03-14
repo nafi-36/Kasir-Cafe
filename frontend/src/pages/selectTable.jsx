@@ -17,14 +17,14 @@ export default class SelectTable extends React.Component {
             isModalOpen: false,
             keyword: ""
         }
+        
         if (localStorage.getItem("token")) {
-            // if (localStorage.getItem("role") === "Admin") {
-            this.state.token = localStorage.getItem("token")
-            // } else {
-            // window.alert("Anda bukan Admin")
-            // window.location = "/"
-            // }
-            // this.state.id = localStorage.getItem("admin_id")
+            if (localStorage.getItem("role") === "Kasir") {
+                this.state.token = localStorage.getItem("token")
+            } else {
+                window.alert("Anda bukan Kasir")
+                window.location = "/"
+            }
         } else {
             window.location = "/login"
         }
@@ -115,7 +115,7 @@ export default class SelectTable extends React.Component {
                             </div>
                         </div>
                         <Footer />
-                    </div>
+                    </div> ``
                 </div>
             </div>
         )

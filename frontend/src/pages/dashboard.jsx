@@ -21,7 +21,6 @@ export default class Home extends React.Component {
             menuCount: 0,
             mejaCount: 0,
             transaksiCount: 0,
-            // outletCount: 0
         }
         // cek di local storage apakah ada token (sudah login)
         if (localStorage.getItem('token')) {
@@ -71,34 +70,6 @@ export default class Home extends React.Component {
             })
     }
 
-    // getAdminOutlet = () => {
-    //     let url = "http://localhost:9000/admin/" + this.state.outlet_id
-
-    //     axios.get(url, this.headerConfig())
-    //         .then(res => {
-    //             this.setState({
-    //                 adminCount: res.data.count
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err.message)
-    //         })
-    // }
-
-    // getCustomer = () => {
-    //     let url = "http://localhost:9000/customer"
-
-    //     axios.get(url, this.headerConfig())
-    //         .then(res => {
-    //             this.setState({
-    //                 customerCount: res.data.count
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err.message)
-    //         })
-    // }
-
     getMenu = () => {
         let url = "http://localhost:9090/menu"
 
@@ -141,43 +112,11 @@ export default class Home extends React.Component {
             })
     }
 
-    // getOutlet = () => {
-    //     let url = "http://localhost:9000/outlet"
-
-    //     axios.get(url, this.headerConfig())
-    //         .then(res => {
-    //             this.setState({
-    //                 outletCount: res.data.count
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err.message)
-    //         })
-    // }
-
-    // getOutletId = () => {
-    //     let url = "http://localhost:9000/outlet/" + this.state.outlet_id
-
-    //     axios.get(url, this.headerConfig())
-    //         .then(res => {
-    //             this.setState({
-    //                 outlet: res.data.outlet
-    //             })
-    //         })
-    //         .catch(err => {
-    //             console.log(err.message)
-    //         })
-    // }
-
     componentDidMount = () => {
         this.getUser()
-        // this.getAdminOutlet()
-        // this.getCustomer()
         this.getMenu()
         this.getMeja()
         this.getTransaksi()
-        // this.getOutlet()
-        // this.getOutletId()
     }
 
     render() {
@@ -295,7 +234,7 @@ export default class Home extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
+                            {/* <div className="row">
                                 <div className="col-md-6 grid-margin stretch-card">
                                     <div className="card">
                                         <div className="card-body">
@@ -336,7 +275,7 @@ export default class Home extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="row">
                                 <div className="col-md-12 grid-margin stretch-card">
                                     <div className="card position-relative">
@@ -504,20 +443,20 @@ export default class Home extends React.Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a className="carousel-control-prev" href="#detailedReports" role="button" data-slide="prev">
+                                                {/* <a className="carousel-control-prev" href="#detailedReports" role="button" data-slide="prev">
                                                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                                                     <span className="sr-only">Previous</span>
                                                 </a>
                                                 <a className="carousel-control-next" href="#detailedReports" role="button" data-slide="next">
                                                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                                                     <span className="sr-only">Next</span>
-                                                </a>
+                                                </a> */}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
+                            {/* <div className="row">
                                 <div className="col-md-7 grid-margin stretch-card">
                                     <div className="card">
                                         <div className="card-body">
@@ -641,8 +580,8 @@ export default class Home extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="row">
+                            </div> */}
+                            {/* <div className="row">
                                 <div className="col-md-4 stretch-card grid-margin">
                                     <div className="card">
                                         <div className="card-body">
@@ -850,8 +789,8 @@ export default class Home extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div> */}
+                        </div> 
                         <Footer />
                     </div>
                 </div>

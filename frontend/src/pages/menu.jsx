@@ -21,14 +21,15 @@ export default class Menu extends React.Component {
             action: "",
             isModalOpen: false,
         }
+
         if (localStorage.getItem("token")) {
-            // if (localStorage.getItem("role") === "Admin") {
+            if (localStorage.getItem("role") === "Admin") {
                 this.state.token = localStorage.getItem("token")
-            // } else {
-            //     window.alert("Anda bukan Admin")
-            //     window.location = "/"
-            // }
-            // this.state.id = localStorage.getItem("admin_id")
+            } else {
+                window.alert("Anda bukan Admin")
+                window.location = "/"
+            }
+            // this.state.id_user = localStorage.getItem("id_user")
         } else {
             window.location = "/login"
         }
@@ -43,6 +44,34 @@ export default class Menu extends React.Component {
 
     getMenu = () => {
         let url = "http://localhost:9090/menu"
+
+        axios.get(url, this.headerConfig())
+            .then(res => {
+                this.setState({
+                    menus: res.data.menu
+                })
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
+    }
+
+    getMenuMakanan = () => {
+        let url = "http://localhost:9090/menu/search/makanan"
+
+        axios.get(url, this.headerConfig())
+            .then(res => {
+                this.setState({
+                    menus: res.data.menu
+                })
+            })
+            .catch(err => {
+                console.log(err.message)
+            })
+    }
+
+    getMenuMinuman = () => {
+        let url = "http://localhost:9090/menu/search/minuman"
 
         axios.get(url, this.headerConfig())
             .then(res => {
@@ -123,7 +152,7 @@ export default class Menu extends React.Component {
         let url = ""
         if (this.state.action === "insert") {
             url = "http://localhost:9090/menu"
-            axios.post(url, form)
+            axios.post(url, form, this.headerConfig())
                 .then(res => {
                     this.getMenu()
                     this.handleClose()
@@ -134,7 +163,7 @@ export default class Menu extends React.Component {
         }
         else if (this.state.action === "update") {
             url = "http://localhost:9090/menu/" + this.state.id_menu
-            axios.put(url, form)
+            axios.put(url, form, this.headerConfig())
                 .then(res => {
                     this.getMenu()
                     this.handleClose()
@@ -180,12 +209,21 @@ export default class Menu extends React.Component {
                             <h3 className="mt-0">Data Menu Makanan & Minuman</h3>
                             <hr />
                             <p>Cari data menu : </p>
-                            <input className="form-control mb-2" type="text" name="keyword"
-                                value={this.state.keyword}
-                                onChange={e => this.setState({ keyword: e.target.value })}
-                                onKeyUp={e => this.handleSearch(e)}
-                                placeholder="Enter package's id / type"
-                            />
+                            <div className="row">
+                                <div className="col-7">
+                                    <input className="form-control mb-2" type="text" name="keyword"
+                                        value={this.state.keyword}
+                                        onChange={e => this.setState({ keyword: e.target.value })}
+                                        onKeyUp={e => this.handleSearch(e)}
+                                        placeholder="Enter package's id / type"
+                                    />
+                                </div>
+                                <div className="col-5">
+                                    <button className="btn btn-primary ml-2 mr-2" onClick={this.getMenu}>All</button>
+                                    <button className="btn btn-primary ml-2 mr-2" onClick={this.getMenuMakanan}>Makanan</button>
+                                    <button className="btn btn-primary ml-2" onClick={this.getMenuMinuman}>Minuman</button>
+                                </div>
+                            </div>
                             <p className="text-danger mb-4">*Klik enter untuk mencari data</p>
                             <button className="btn btn-primary mb-3" onClick={() => this.handleAdd()}>
                                 Add Menu

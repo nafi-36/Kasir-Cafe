@@ -10,13 +10,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // import model
 const models = require('../models/index');
 const meja = models.meja;
+const transaksi = models.transaksi;
 
 // import sequelize op
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 // GET ALL MEJA, METHOD: GET, FUNCTION: findAll
-app.get("/",  async (req, res) => {
+app.get("/", async (req, res) => {
     let result = await meja.findAll()
     res.json({
         count: result.length,
@@ -79,21 +80,34 @@ app.put("/:id", (req, res) => {
 })
 
 // DELETE MEJA, METHOD: DELETE, FUNCTION: destroy
-app.delete("/:id", (req, res) => {
-    let param = {
-        id_meja: req.params.id
+app.delete("/:id", async (req, res) => {
+    try {
+        let param = { id_meja: req.params.id }
+        const row = await transaksi.findOne({ where: param })
+        if (row !== null) {
+            res.json({
+                message: "Data can not be deleted",
+            })
+        }
+        else {
+            let result = await meja.findOne({ where: param })
+            meja.destroy({ where: param })
+                .then(result => {
+                    res.json({
+                        message: "Data has been deleted",
+                    })
+                })
+                .catch(error => {
+                    res.json({
+                        message: error.message
+                    })
+                })
+        }
+    } catch (error) {
+        res.json({
+            message: error.message
+        })
     }
-    meja.destroy({ where: param })
-        .then(result => {
-            res.json({
-                message: "Data has been deleted"
-            })
-        })
-        .catch(error => {
-            res.json({
-                message: error.message
-            })
-        })
 })
 
 // SEARCH MEJA, METHOD: POST, FUNCTION: findAll
@@ -118,7 +132,7 @@ app.post("/search", async (req, res) => {
                     }
                 }
             ]
-        }, 
+        },
     })
     res.json({
         meja: result
@@ -137,7 +151,7 @@ app.post("/search/table", async (req, res) => {
                     }
                 }
             ]
-        }, 
+        },
     })
     res.json({
         meja: result

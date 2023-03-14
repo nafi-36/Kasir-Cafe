@@ -28,7 +28,6 @@ export default class Profile extends React.Component {
         if (localStorage.getItem("token")) {
             this.state.token = localStorage.getItem("token")
             this.state.id_user = localStorage.getItem("id_user")
-            // this.state.outletID = localStorage.getItem("outlet_id")
         } else {
             window.location = "/login"
         }
@@ -59,12 +58,7 @@ export default class Profile extends React.Component {
                     password: "",
                     role: res.data.user.role,
                     image: res.data.user.image
-                    // outlet_id: res.data.admin.outlet.outlet_id,
-                    // outlet_name: res.data.admin.outlet.name
                 })
-                // console.log(this.state.admin)
-                // console.log(this.state.outlet_id)
-                // console.log(this.state.outlet_name)
             })
             .catch(err => {
                 console.log(err.message)
@@ -99,6 +93,7 @@ export default class Profile extends React.Component {
         if (localStorage.getItem("role") !== "Admin") {
             e.preventDefault()
             window.alert("Anda bukan Admin, tidak dapat mengubah profile")
+            this.getUserId()
         } else {
             e.preventDefault()
             let form = new FormData()
@@ -107,12 +102,12 @@ export default class Profile extends React.Component {
             // form.append("password", this.state.password)
             form.append("role", this.state.role)
             form.append("image", this.state.image)
+
             let url = "http://localhost:9090/user/" + this.state.id_user
             axios.put(url, form, this.headerConfig())
                 .then(response => {
                     // window.alert(response.data.message)
                     this.getUserId()
-                    // this.handleColse()
                 })
                 .catch(error => console.log(error))
 
@@ -136,12 +131,6 @@ export default class Profile extends React.Component {
         }
         window.location = "/login"
     }
-
-    // handleClose = () => {
-    //     this.setState({
-    //         isModalOpen: false
-    //     })
-    // }
 
     componentDidMount() {
         this.getUserId()
@@ -264,7 +253,7 @@ export default class Profile extends React.Component {
                     <Sidebar />
                     <div className="main-panel">
                         <div className="content-wrapper">
-                            <h3 className="mt-0 ">Admin Profile</h3>
+                            <h3 className="mt-0 ">Setting Profile</h3>
                             <hr />
                             <div class="container rounded bg-white">
                                 <div class="row">
@@ -280,9 +269,9 @@ export default class Profile extends React.Component {
                                     </div>
                                     <div class="col-md-8">
                                         <div class="p-3 py-5">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                            {/* <div class="d-flex justify-content-between align-items-center mb-3">
                                                 <h4 class="text-right">Profile Settings</h4>
-                                            </div>
+                                            </div> */}
                                             <Form onSubmit={e => this.saveUser(e)}>
                                                 <Form.Group className="mb-2" controlId="nama_user">
                                                     <Form.Label>Name</Form.Label>
@@ -309,16 +298,6 @@ export default class Profile extends React.Component {
                                                         <option value="Manajer">Manajer</option>
                                                     </select>
                                                 </Form.Group>
-                                                {/* <Form.Group className="mb-2" controlId="outlet_id">
-                                                    <label for="exampleSelectGender">Outlet</label><br />
-                                                    <select type="text" name="outlet_id" class="form-control" id="exampleSelectGender"
-                                                        onChange={this.handleChange} required >
-                                                        <option value={this.state.outlet_id}>{this.state.outlet_name}</option>
-                                                        {this.state.outlet.map((item, index) => (
-                                                            <option value={item.outlet_id}>{item.name}</option>
-                                                        ))}
-                                                    </select>
-                                                </Form.Group> */}
                                                 <Form.Group className="mb-2" controlId="image">
                                                     <Form.Label>Image</Form.Label>
                                                     <Form.Control type="file" name="image" placeholder="Enter the image"

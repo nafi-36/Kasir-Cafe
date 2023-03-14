@@ -20,14 +20,15 @@ export default class Meja extends React.Component {
             isModalOpen: false,
             keyword: ""
         }
+        
         if (localStorage.getItem("token")) {
-            // if (localStorage.getItem("role") === "Admin") {
-            this.state.token = localStorage.getItem("token")
-            // } else {
-            // window.alert("Anda bukan Admin")
-            // window.location = "/"
-            // }
-            // this.state.id = localStorage.getItem("admin_id")
+            if (localStorage.getItem("role") === "Admin") {
+                this.state.token = localStorage.getItem("token")
+            } else {
+                window.alert("Anda bukan Admin")
+                window.location = "/"
+            }
+            // this.state.id = localStorage.getItem("id_user")
         } else {
             window.location = "/login"
         }
@@ -43,8 +44,7 @@ export default class Meja extends React.Component {
     getTable = () => {
         let url = "http://localhost:9090/meja"
 
-        // axios.get(url, this.headerConfig())
-        axios.get(url)
+        axios.get(url, this.headerConfig())
             .then(res => {
                 this.setState({
                     tables: res.data.meja
@@ -86,7 +86,7 @@ export default class Meja extends React.Component {
     Edit = item => {
         this.setState({
             id_meja: item.id_meja,
-            nomor_meja: item.nomor_mmeja,
+            nomor_meja: item.nomor_meja,
             available: item.available,
             action: "update",
             isModalOpen: true
@@ -103,8 +103,7 @@ export default class Meja extends React.Component {
                 nomor_meja: this.state.nomor_meja,
                 available: this.state.available,
             }
-            // axios.post(url, form, this.headerConfig())
-            axios.post(url, form)
+            axios.post(url, form, this.headerConfig())
                 .then(response => {
                     // window.alert(response.data.message)
                     this.getTable()
@@ -119,8 +118,7 @@ export default class Meja extends React.Component {
                 available: this.state.available,
             }
             url = "http://localhost:9090/meja/" + this.state.id_meja
-            // axios.put(url, form, this.headerConfig())
-            axios.put(url, form)
+            axios.put(url, form, this.headerConfig())
                 .then(response => {
                     // window.alert(response.data.message)
                     this.getTable()
@@ -194,12 +192,12 @@ export default class Meja extends React.Component {
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
                                                 <td>{item.id_meja}</td>
-                                                <td><alert className="alert alert-primary">{item.nomor_meja}</alert></td>
+                                                <td><button className="btn btn-primary" disabled>{item.nomor_meja}</button></td>
                                                 <td>{
                                                     item.available === "Yes" ? (
-                                                        <alert className="alert alert-success">{item.available}</alert>
+                                                        <button className="btn btn-success text-dark" disabled>{item.available}</button>
                                                     ) : (
-                                                        <alert className="alert alert-danger">{item.available}</alert>
+                                                        <button className="btn btn-danger" disabled>{item.available}</button>
                                                     )
                                                 }</td>
                                                 <td>
@@ -221,27 +219,19 @@ export default class Meja extends React.Component {
                             <Modal show={this.state.isModalOpen} onHide={this.handleClose}>
                                 {/* <Modal.Header closeButton> */}
                                 <Modal.Header>
-                                    <Modal.Title>Form Admin</Modal.Title>
+                                    <Modal.Title>Form Table</Modal.Title>
                                 </Modal.Header>
                                 <Form onSubmit={e => this.saveTable(e)}>
                                     <Modal.Body>
-                                        {/* {this.state.action === "editPassword" ? (
-                                            <Form.Group className="mb-2" controlId="password">
-                                                <Form.Label>Password</Form.Label>
-                                                <Form.Control type="password" name="password" placeholder="Masukkan password"
-                                                    value={this.state.password} onChange={e => this.setState({ password: e.target.value })} required />
-                                            </Form.Group>
-                                        ) : (<div></div>) && this.state.action !== "editPassword" ? (
-                                            <div> */}
                                         <Form.Group className="mb-2" controlId="nomor_meja">
                                             <Form.Label>Table Number</Form.Label>
-                                            <Form.Control type="text" name="nomor_meja" placeholder="Masukkan nama"
+                                            <Form.Control type="text" name="nomor_meja" placeholder="Masukkan nomor meja"
                                                 value={this.state.nomor_meja} onChange={e => this.setState({ nomor_meja: e.target.value })} required />
                                         </Form.Group>
                                         {this.state.action === "insert" ? (
                                             <Form.Group className="mb-2" controlId="available" >
-                                                <label for="exampleSelectGender">Role</label><br />
-                                                <select type="text" name="available" class="form-control" id="exampleSelectGender" placeholder="Pilih role"
+                                                <label for="exampleSelectGender">Available</label><br />
+                                                <select type="text" name="available" class="form-control" id="exampleSelectGender" placeholder="Pilih available meja"
                                                     onChange={e => this.setState({ available: e.target.value })} disabled >
                                                     <option value={this.state.available}>{this.state.available}</option>
                                                     <option value="Yes">Yes</option>
@@ -259,8 +249,6 @@ export default class Meja extends React.Component {
                                                 </select>
                                             </Form.Group>
                                         )}
-                                        {/* </div> */}
-                                        {/* ) : (<div></div>)} */}
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="dark" onClick={this.handleClose}>

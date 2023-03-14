@@ -134,7 +134,7 @@ export default class Navbar extends React.Component {
                         </li>
                         <li className="nav-item nav-profile dropdown">
                             <a className="nav-link dropdown-toggle" href="/" data-toggle="dropdown" id="profileDropdown">
-                                <img src={"http://localhost:9090/image/user/" + this.state.image} alt="User Image" />   
+                                <img src={"http://localhost:9090/image/user/" + this.state.image} alt="User Image" />
                             </a>
                             <div className="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                                 <a className="dropdown-item" onClick={() => this.setting()}>

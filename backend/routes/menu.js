@@ -174,6 +174,30 @@ app.delete("/:id", async (req, res) => {
     }
 })
 
+// SEARCH MENU makanan, METHOD: POST, FUNCTION: findAll
+app.get("/search/makanan", async (req, res) => {
+    // let keyword = req.body.keyword
+    let param = {
+        jenis: "Makanan"
+    }
+    let result = await menu.findAll({ where: param })
+    res.json({
+        menu: result
+    })
+})
+
+// SEARCH MENU makanan, METHOD: POST, FUNCTION: findAll
+app.get("/search/minuman", async (req, res) => {
+    // let keyword = req.body.keyword
+    let param = {
+        jenis: "Minuman"
+    }
+    let result = await menu.findAll({ where: param })
+    res.json({
+        menu: result
+    })
+})
+
 // SEARCH MENU, METHOD: POST, FUNCTION: findAll
 app.post("/search", async (req, res) => {
     let keyword = req.body.keyword
@@ -227,7 +251,34 @@ app.get("/search/favorite", async (req, res) => {
                 [models.sequelize.fn('sum', models.sequelize.col('qty')), 'DESC']
             ]
         });
-        res.status(200).json({ menu: result });
+        res.status(200).json({ menu: result }); 
+    } 
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// GET MENU by QTY, METHOD: GET, FUNCTION: findAll
+app.get("/search/least", async (req, res) => {
+    try {
+        const result = await detail_transaksi.findAll({
+            attributes: [
+                'id_menu',
+                [models.sequelize.fn('sum', models.sequelize.col('qty')), 'total_penjualan']
+            ],
+            include: [{
+                model: menu,
+                as: 'menu',
+                // where: {jenis: 'Makanan'}
+                attributes: ['nama_menu']
+            }],
+            group: ['id_menu'],
+            order: [
+                [models.sequelize.fn('sum', models.sequelize.col('qty'))]
+            ]
+        });
+        res.status(200).json({ menu: result }); 
     } 
     catch (error) {
         console.log(error);
