@@ -69,7 +69,7 @@ export default class CetakTransaksi extends React.Component {
 
         setTimeout(() => {
             window.print()
-        }, 100)
+        }, 500)
     }
 
     render() {
@@ -95,6 +95,11 @@ export default class CetakTransaksi extends React.Component {
                                 item.user.nama_user
                             )
                         })}</p>
+                        <p>Meja : {this.state.transaksi.map((item, index) => {
+                            return (
+                                item.meja.nomor_meja
+                            )
+                        })}</p>
                         <p>Pelanggan : {this.state.transaksi.map((item, index) => {
                             return (
                                 item.nama_pelanggan
@@ -111,22 +116,20 @@ export default class CetakTransaksi extends React.Component {
                     <table className="table table-bordered mb-3 mt-3">
                         <thead>
                             <tr>
-                                {/* <th>No.</th> */}
                                 <th>Menu</th>
-                                <th>Harga</th>
+                                {/* <th>Harga</th> */}
                                 <th>Jumlah</th>
                                 <th>Total</th>
-                            </tr>
+                            </tr> 
                         </thead>
                         <tbody>
                             {this.state.transaksi.map((item, index) => (
                                 item.detail_transaksi.map((it, index) => {
                                     return (
                                         <tr key={index}>
-                                            {/* <td>{index + 1}</td> */}
                                             <td>{it.menu.nama_menu}</td>
-                                            <td>Rp {it.menu.harga}</td>
-                                            <td>{it.qty}</td>
+                                            {/* <td>Rp {it.menu.harga}</td> */}
+                                            <td>{it.menu.harga} x {it.qty}</td>
                                             <td>Rp {it.subtotal}</td>
                                         </tr>
                                     )
@@ -134,7 +137,7 @@ export default class CetakTransaksi extends React.Component {
                             ))}
                             {/* {this.state.transaksi.map((item, index) => ( */}
                             <tr>
-                                <td colSpan="3"><b>Total</b></td>
+                                <td colSpan="2"><b>Total</b></td>
                                 <td>Rp {this.state.total}</td>
                             </tr>
                             {/* ))} */}

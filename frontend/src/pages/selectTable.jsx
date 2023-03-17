@@ -40,8 +40,7 @@ export default class SelectTable extends React.Component {
     getTable = () => {
         let url = "http://localhost:9090/meja"
 
-        // axios.get(url, this.headerConfig())
-        axios.get(url)
+        axios.get(url, this.headerConfig())
             .then(res => {
                 this.setState({
                     tables: res.data.meja
@@ -58,7 +57,7 @@ export default class SelectTable extends React.Component {
             let data = {
                 keyword: this.state.keyword
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         tables: res.data.meja
@@ -99,7 +98,7 @@ export default class SelectTable extends React.Component {
                                 value={this.state.keyword}
                                 onChange={e => this.setState({ keyword: e.target.value })}
                                 onKeyUp={e => this.handleSearch(e)}
-                                placeholder="Enter table's id / number / available"
+                                placeholder="Masukkan keyword pencarian"
                             />
                             <p className="text-danger mb-4">*Klik enter untuk mencari data</p>
                             <div className="row">

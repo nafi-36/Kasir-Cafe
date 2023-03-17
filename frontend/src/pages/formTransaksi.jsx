@@ -9,8 +9,6 @@ export default class FormTransaksi extends React.Component {
         super()
         this.state = {
             token: "",
-            // outlet_id: "",
-            // outlet_name: "",
             id_user: "",
             nama_user: "",
             id_meja: "",
@@ -18,10 +16,8 @@ export default class FormTransaksi extends React.Component {
             nama_pelanggan: "",
             cart: [],   // untuk menyimpan list cart
             total: 0,   // untuk menyimpan data total belanja
-            // batas_waktu: "",
-            // tgl: null,
+            // tgl_transaksi: null,
             status: "Belum bayar",
-            // dibayar: "Belum Bayar"
         }
         if (localStorage.getItem('token')) {
             if (localStorage.getItem("id_meja") !== null && localStorage.getItem("cart") !== null) {
@@ -56,9 +52,7 @@ export default class FormTransaksi extends React.Component {
         axios.get(url, this.headerConfig())
             .then(res => {
                 this.setState({
-                    // outlet_id: res.data.admin.outlet_id,
                     nama_user: res.data.user.nama_user,
-                    // outlet_name: res.data.admin.outlet.name,
                 })
             })
             .catch(err => {
@@ -227,7 +221,7 @@ export default class FormTransaksi extends React.Component {
                                             {this.state.cart.map((item, index) => (
                                                 <tr key={index}>
                                                     <td>{item.nama_menu}</td>
-                                                    <td>{item.qty} kg</td>
+                                                    <td>{item.qty}</td>
                                                     <td>Rp {item.harga}</td>
                                                     <td className="text-right">Rp {item.harga * item.qty}</td>
                                                 </tr>

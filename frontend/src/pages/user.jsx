@@ -12,7 +12,7 @@ export default class User extends React.Component {
         super()
         this.state = {
             token: "",
-            // outletID: "",
+            id: "",
             users: [],
             id_user: "",
             nama_user: "",
@@ -20,15 +20,12 @@ export default class User extends React.Component {
             password: "",
             role: "",
             image: null,
-            // outlet_id: "",
-            // outlet: [],
-            // outlet_name: "",
             // fillPassword: true,
             action: "",
             isModalOpen: false,
             keyword: ""
         }
-        
+
         if (localStorage.getItem("token")) {
             if (localStorage.getItem("role") === "Admin") {
                 this.state.token = localStorage.getItem("token")
@@ -81,7 +78,7 @@ export default class User extends React.Component {
             let data = {
                 keyword: this.state.keyword
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         users: res.data.user
@@ -101,7 +98,6 @@ export default class User extends React.Component {
             password: "",
             role: "",
             image: null,
-            // outlet_id: "",
             // fillPassword: true,
             action: "insert",
             isModalOpen: true
@@ -116,22 +112,20 @@ export default class User extends React.Component {
             password: "",  // untuk edit password bisa dibuat end-point sendiri 
             role: item.role,
             image: item.image,
-            // outlet_id: item.outlet_id,
-            // outlet_name: item.outlet.name,
             // fillPassword: false,
             action: "update",
             isModalOpen: true
         })
     }
 
-    editPassword = (item) => {
-        this.setState({
-            id_user: item.id_user,
-            password: "",
-            action: "editPassword",
-            isModalOpen: true
-        })
-    }
+    // editPassword = (item) => {
+    //     this.setState({
+    //         id_user: item.id_user,
+    //         password: "",
+    //         action: "editPassword",
+    //         isModalOpen: true
+    //     })
+    // }
 
     saveUser = (e) => {
         e.preventDefault()
@@ -171,7 +165,7 @@ export default class User extends React.Component {
             let form = new FormData()
             form.append("nama_user", this.state.nama_user)
             form.append("username", this.state.username)
-            // form.append("password", this.state.password)
+            form.append("password", this.state.password)
             form.append("role", this.state.role)
             form.append("image", this.state.image)
 
@@ -186,37 +180,40 @@ export default class User extends React.Component {
                     console.log(err.message)
                 })
         }
-        else if (this.state.action === "editPassword") {
-            let form = {
-                id_user: this.state.id_user,
-                password: this.state.password,
-            }
-            url = "http://localhost:9090/user/password/" + this.state.id_user
-            // axios.put(url, form, this.headerConfig())
-            axios.put(url, form, this.headerConfig())
-                .then(response => {
-                    // window.alert(response.data.message)
-                    this.getUser()
-                    this.handleClose()
-                })
-                .catch(err => {
-                    console.log(err.message)
-                })
-        }
-
+        // else if (this.state.action === "editPassword") {
+        //     let form = {
+        //         id_user: this.state.id_user,
+        //         password: this.state.password,
+        //     }
+        //     url = "http://localhost:9090/user/password/" + this.state.id_user
+        //     // axios.put(url, form, this.headerConfig())
+        //     axios.put(url, form, this.headerConfig())
+        //         .then(response => {
+        //             // window.alert(response.data.message)
+        //             this.getUser()
+        //             this.handleClose()
+        //         })
+        //         .catch(err => {
+        //             console.log(err.message)
+        //         })
+        // }
     }
 
     dropUser = (id) => {
-        let url = "http://localhost:9090/user/" + id
-        if (window.confirm("Apakah anda yakin ingin menghapus data ini ?")) {
-            axios.delete(url)
-                .then(res => {
-                    console.log(res.data.message)
-                    this.getUser()
-                })
-                .catch(err => {
-                    console.log(err.message)
-                })
+        if (parseInt(localStorage.getItem("id_user")) === id) {
+            window.confirm("Tidak dapat menghapus Admin")
+        } else {
+            let url = "http://localhost:9090/user/" + id
+            if (window.confirm("Apakah anda yakin ingin menghapus data ini ?")) {
+                axios.delete(url, this.headerConfig())
+                    .then(res => {
+                        console.log(res.data.message)
+                        this.getUser()
+                    })
+                    .catch(err => {
+                        console.log(err.message)
+                    })
+            }
         }
     }
 
@@ -228,7 +225,6 @@ export default class User extends React.Component {
 
     componentDidMount = () => {
         this.getUser()
-        // this.getOutlet()
     }
 
     render() {
@@ -246,7 +242,7 @@ export default class User extends React.Component {
                                 value={this.state.keyword}
                                 onChange={e => this.setState({ keyword: e.target.value })}
                                 onKeyUp={e => this.handleSearch(e)}
-                                placeholder="Enter admin's id / name / role"
+                                placeholder="Masukkan keyword pencarian"
                             />
                             <p className="text-danger mb-4">*Klik enter untuk mencari data</p>
                             <button className="btn btn-primary mb-3" onClick={() => this.Add()}>
@@ -289,10 +285,10 @@ export default class User extends React.Component {
                                                         onClick={() => this.dropUser(item.id_user)}>
                                                         <span><Delete /> </span>
                                                     </button>
-                                                    <button className="btn btn-secondary m-1"
+                                                    {/* <button className="btn btn-secondary m-1"
                                                         onClick={() => this.editPassword(item)}>
                                                         Edit Password
-                                                    </button>
+                                                    </button> */}
                                                 </td>
                                             </tr>
                                         ))}
@@ -307,14 +303,14 @@ export default class User extends React.Component {
                                 </Modal.Header>
                                 <Form onSubmit={e => this.saveUser(e)}>
                                     <Modal.Body>
-                                        {this.state.action === "editPassword" ? (
+                                        {/* {this.state.action === "editPassword" ? (
                                             <Form.Group className="mb-2" controlId="password">
                                                 <Form.Label>Password</Form.Label>
                                                 <Form.Control type="password" name="password" placeholder="Masukkan password"
                                                     value={this.state.password} onChange={this.handleChange} required />
                                             </Form.Group>
                                         ) : (<div></div>) && this.state.action !== "editPassword" ? (
-                                            <div>
+                                            <div> */}
                                                 <Form.Group className="mb-2" controlId="nama_user">
                                                     <Form.Label>Name</Form.Label>
                                                     <Form.Control type="text" name="nama_user" placeholder="Masukkan nama"
@@ -331,8 +327,13 @@ export default class User extends React.Component {
                                                         <Form.Control type="password" name="password" placeholder="Masukkan password"
                                                             value={this.state.password} onChange={this.handleChange} required />
                                                     </Form.Group>
-                                                ) : (
-                                                    <div></div>
+                                                ) : ( 
+                                                    // <div></div>
+                                                    <Form.Group className="mb-2" controlId="password">
+                                                        <Form.Label>Password</Form.Label>
+                                                        <Form.Control type="password" name="password" placeholder="Masukkan password"
+                                                            value={this.state.password} onChange={this.handleChange} />
+                                                    </Form.Group>
                                                 )}
                                                 <Form.Group className="mb-2" controlId="role" >
                                                     <label for="exampleSelectGender">Role</label><br />
@@ -354,7 +355,7 @@ export default class User extends React.Component {
                                                             onChange={this.handleFile} />
                                                     )}
                                                 </Form.Group>
-                                            </div>) : (<div></div>)}
+                                            {/* </div>) : (<div></div>)} */}
                                     </Modal.Body>
                                     <Modal.Footer>
                                         <Button variant="dark" onClick={this.handleClose}>

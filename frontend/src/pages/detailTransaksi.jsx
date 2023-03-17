@@ -98,6 +98,16 @@ export default class DetailTransaksi extends React.Component {
                                             </div>
                                         </div>
                                         <div className="form-group row">
+                                            <label className="col-sm-3 col-form-label">Tanggal Transaksi</label>
+                                            <div className="col-sm-9">
+                                                <input type="text" name="tgl_transaksi" className="form-control" value={this.state.transaksi.map((item, index) => {
+                                                    return (
+                                                        item.tgl_transaksi
+                                                    )
+                                                })} disabled />
+                                            </div>
+                                        </div>
+                                        <div className="form-group row">
                                             <label className="col-sm-3 col-form-label">Kasir</label>
                                             <div className="col-sm-9">
                                                 <input type="text" name="user" className="form-control" value={this.state.transaksi.map((item, index) => {
@@ -108,21 +118,21 @@ export default class DetailTransaksi extends React.Component {
                                             </div>
                                         </div>
                                         <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Pelanggan</label>
+                                            <label className="col-sm-3 col-form-label">Meja</label>
                                             <div className="col-sm-9">
                                                 <input type="text" name="customer" className="form-control" value={this.state.transaksi.map((item, index) => {
                                                     return (
-                                                        item.nama_pelanggan
+                                                        item.meja.nomor_meja
                                                     )
                                                 })} disabled />
                                             </div>
                                         </div>
                                         <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Tanggal Transaksi</label>
+                                            <label className="col-sm-3 col-form-label">Pelanggan</label>
                                             <div className="col-sm-9">
-                                                <input type="text" name="tgl_transaksi" className="form-control" value={this.state.transaksi.map((item, index) => {
+                                                <input type="text" name="customer" className="form-control" value={this.state.transaksi.map((item, index) => {
                                                     return (
-                                                        item.tgl_transaksi
+                                                        item.nama_pelanggan
                                                     )
                                                 })} disabled />
                                             </div>

@@ -54,7 +54,7 @@ app.get("/", auth, async (req, res) => {
 })
 
 // GET USER by ID, METHOD: GET, FUNCTION: findOne
-app.get("/:id", (req, res) => {
+app.get("/:id", auth, (req, res) => {
     user.findOne({ where: { id_user: req.params.id } })
         .then(result => {
             res.json({
@@ -69,7 +69,7 @@ app.get("/:id", (req, res) => {
 })
 
 // ADD USER, METHOD: POST, FUNCTION: create
-app.post("/", upload.single("image"), (req, res) => {
+app.post("/", auth, upload.single("image"), (req, res) => {
     if (!req.file) {
         res.json({
             message: "No uploaded file"
@@ -98,7 +98,7 @@ app.post("/", upload.single("image"), (req, res) => {
 })
 
 // UPDATE USER, METHOD: PUT, FUNCTION: update
-app.put("/:id", upload.single("image"), (req, res) => {
+app.put("/:id", auth, upload.single("image"), (req, res) => {
     let param = {
         id_user: req.params.id
     }
@@ -125,9 +125,9 @@ app.put("/:id", upload.single("image"), (req, res) => {
         data.image = req.file.filename
     }
 
-    // if (req.body.password) {
-    //     data.password = md5(req.body.password)
-    // }
+    if (req.body.password) {
+        data.password = md5(req.body.password)
+    }
 
     user.update(data, { where: param })
         .then(result => {
@@ -143,7 +143,7 @@ app.put("/:id", upload.single("image"), (req, res) => {
 })
 
 // UPDATE PASSWORD USER, METHOD: PUT, FUNCTION: update
-app.put("/password/:id", (req, res) => {
+app.put("/password/:id", auth, (req, res) => {
     let param = {
         id_user: req.params.id
     }
@@ -164,7 +164,7 @@ app.put("/password/:id", (req, res) => {
 })
 
 // DELETE USER, METHOD: DELETE, FUNCTION: destroy
-app.delete("/:id", async (req, res) => {
+app.delete("/:id", auth, async (req, res) => {
     try {
         let param = { id_user: req.params.id }
         const row = await transaksi.findOne({ where: param })
@@ -234,7 +234,7 @@ app.post("/auth", async (req, res) => {
 })
 
 // SEARCH USER, METHOD: POST, FUNCTION: findAll
-app.post("/search", async (req, res) => {
+app.post("/search", auth, async (req, res) => {
     let keyword = req.body.keyword
     let result = await user.findAll({
         where: {

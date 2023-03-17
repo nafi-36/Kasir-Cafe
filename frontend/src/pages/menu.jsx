@@ -90,7 +90,7 @@ export default class Menu extends React.Component {
             let data = {
                 keyword: this.state.keyword
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         menus: res.data.menu
@@ -154,6 +154,7 @@ export default class Menu extends React.Component {
             url = "http://localhost:9090/menu"
             axios.post(url, form, this.headerConfig())
                 .then(res => {
+                    window.alert(res.data.message)
                     this.getMenu()
                     this.handleClose()
                 })
@@ -165,6 +166,7 @@ export default class Menu extends React.Component {
             url = "http://localhost:9090/menu/" + this.state.id_menu
             axios.put(url, form, this.headerConfig())
                 .then(res => {
+                    window.alert(res.data.message)
                     this.getMenu()
                     this.handleClose()
                 })
@@ -177,7 +179,7 @@ export default class Menu extends React.Component {
     handleDrop = (id) => {
         let url = "http://localhost:9090/menu/" + id
         if (window.confirm("Apakah anda yakin ingin menghapus data ini ?")) {
-            axios.delete(url)
+            axios.delete(url, this.headerConfig())
                 .then(res => {
                     console.log(res.data.message)
                     this.getMenu()
@@ -215,7 +217,7 @@ export default class Menu extends React.Component {
                                         value={this.state.keyword}
                                         onChange={e => this.setState({ keyword: e.target.value })}
                                         onKeyUp={e => this.handleSearch(e)}
-                                        placeholder="Enter package's id / type"
+                                        placeholder="Masukkan keyword pencarian"
                                     />
                                 </div>
                                 <div className="col-5">

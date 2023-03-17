@@ -6,14 +6,12 @@ export default class PrintLaporan extends React.Component {
         super()
         this.state = {
             token: "",
-            // outlet_id: "",
             transaksi: [],
             id_transaksi: "",
-            // admin_id: "",
-            // customer_id: "",
+            // id_user: "",
+            // id_meja: "",
             nomor_meja: "",
             nama_user: "",
-            // outlet: "",
             tgl_transaksi: "",
             status: "",
             detail_transaksi: [],
@@ -27,6 +25,7 @@ export default class PrintLaporan extends React.Component {
                 this.state.token = localStorage.getItem('token')
                 this.state.start = localStorage.getItem('start')
                 this.state.end = localStorage.getItem('end')
+                this.state.nama_user = localStorage.getItem('nama_user')
             } else {
                 window.alert("Anda bukan Manajer")
                 window.location = "/"
@@ -45,10 +44,9 @@ export default class PrintLaporan extends React.Component {
     }
 
     getTransaksi = () => {
-        let url = "http://localhost:9090/transaksi"
+        let url = "http://localhost:9090/transaksi/trans/lunas"
 
-        // axios.get(url, this.headerConfig())
-        axios.get(url)
+        axios.get(url, this.headerConfig())
             .then(res => {
                 this.setState({
                     transaksi: res.data.transaksi,
@@ -71,7 +69,7 @@ export default class PrintLaporan extends React.Component {
                 start: this.state.start,
                 end: this.state.end
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         transaksi: res.data.transaksi,
@@ -108,6 +106,7 @@ export default class PrintLaporan extends React.Component {
                 ) : (
                     <h3 className="text-center mb-5">Data Transaksi {this.state.start} sd. {this.state.end}</h3>
                 )}
+                <h6>Manajer : {this.state.nama_user}</h6>
                 <br />
                 {/* <div className="table-responsive"> */}
                 <table className="table table-bordered mb-5">
@@ -138,10 +137,7 @@ export default class PrintLaporan extends React.Component {
                                     <td>{item.user.nama_user}</td>
                                     <td>{item.nama_pelanggan}</td>
                                     <td>{item.tgl_transaksi}</td>
-                                    {/* <td>{item.batas_waktu}</td> */}
-                                    {/* <td>{item.tgl_bayar}</td> */}
                                     <td>{item.status}</td>
-                                    {/* <td>{item.dibayar}</td> */}
                                     <td><ol>{item.detail_transaksi.map((item, index) => (
                                         <li>{item.menu.nama_menu}</li>
                                     ))}</ol>

@@ -41,8 +41,7 @@ export default class SelectMenu extends React.Component {
     getMenu = () => {
         let url = "http://localhost:9090/menu"
 
-        // axios.get(url, this.headerConfig())
-        axios.get(url)
+        axios.get(url, this.headerConfig())
             .then(res => {
                 this.setState({
                     menus: res.data.menu
@@ -87,7 +86,7 @@ export default class SelectMenu extends React.Component {
             let data = {
                 keyword: this.state.keyword
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         menus: res.data.menu

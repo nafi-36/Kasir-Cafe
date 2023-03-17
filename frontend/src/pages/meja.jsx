@@ -61,7 +61,7 @@ export default class Meja extends React.Component {
             let data = {
                 keyword: this.state.keyword
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         tables: res.data.meja
@@ -105,7 +105,7 @@ export default class Meja extends React.Component {
             }
             axios.post(url, form, this.headerConfig())
                 .then(response => {
-                    // window.alert(response.data.message)
+                    window.alert(response.data.message)
                     this.getTable()
                     this.handleClose()
                 })
@@ -120,7 +120,7 @@ export default class Meja extends React.Component {
             url = "http://localhost:9090/meja/" + this.state.id_meja
             axios.put(url, form, this.headerConfig())
                 .then(response => {
-                    // window.alert(response.data.message)
+                    window.alert(response.data.message)
                     this.getTable()
                     this.handleClose()
                 })
@@ -134,7 +134,7 @@ export default class Meja extends React.Component {
     dropTable = id => {
         let url = "http://localhost:9090/meja/" + id
         if (window.confirm("Apakah anda yakin ingin menghapus data ini ?")) {
-            axios.delete(url)
+            axios.delete(url, this.headerConfig())
                 .then(res => {
                     console.log(res.data.message)
                     this.getTable()
@@ -170,7 +170,7 @@ export default class Meja extends React.Component {
                                 value={this.state.keyword}
                                 onChange={e => this.setState({ keyword: e.target.value })}
                                 onKeyUp={e => this.handleSearch(e)}
-                                placeholder="Enter table's id / number / available"
+                                placeholder="Masukkan keyword pencarian"
                             />
                             <p className="text-danger mb-4">*Klik enter untuk mencari data</p>
                             <button className="btn btn-primary mb-3" onClick={() => this.Add()}>

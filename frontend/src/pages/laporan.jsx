@@ -10,7 +10,6 @@ export default class Laporan extends React.Component {
         super()
         this.state = {
             token: "",
-            // outlet_id: "",
             transaksi: [],
             id_transaksi: "",
             // id_user: "",
@@ -46,7 +45,7 @@ export default class Laporan extends React.Component {
     }
 
     getTransaksi = () => {
-        let url = "http://localhost:9090/transaksi"
+        let url = "http://localhost:9090/transaksi/trans/lunas"
 
         axios.get(url, this.headerConfig())
             .then(res => {
@@ -66,7 +65,7 @@ export default class Laporan extends React.Component {
             let data = {
                 keyword: this.state.keyword
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         transaksi: res.data.transaksi,
@@ -89,7 +88,7 @@ export default class Laporan extends React.Component {
                 start: this.state.start,
                 end: this.state.end
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         transaksi: res.data.transaksi,

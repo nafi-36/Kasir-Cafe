@@ -12,7 +12,6 @@ export default class Profile extends React.Component {
         super()
         this.state = {
             token: "",
-            // outletID: "",
             id_user: "",
             user: [],
             nama_user: "",
@@ -48,11 +47,10 @@ export default class Profile extends React.Component {
     getUserId = () => {
         let url = "http://localhost:9090/user/" + this.state.id_user
 
-        // axios.get(url, this.headerConfig())
-        axios.get(url)
+        axios.get(url, this.headerConfig())
             .then(res => {
                 this.setState({
-                    user: res.data.user,
+                    user: res.data.user, 
                     nama_user: res.data.user.nama_user,
                     username: res.data.user.username,
                     password: "",
@@ -99,7 +97,7 @@ export default class Profile extends React.Component {
             let form = new FormData()
             form.append("nama_user", this.state.nama_user)
             form.append("username", this.state.username)
-            // form.append("password", this.state.password)
+            form.append("password", this.state.password)
             form.append("role", this.state.role)
             form.append("image", this.state.image)
 
@@ -120,7 +118,7 @@ export default class Profile extends React.Component {
     dropUser = id => {
         let url = "http://localhost:9090/user/" + id
         if (window.confirm("Apakah anda yakin ingin menghapus akun ini ?")) {
-            axios.delete(url)
+            axios.delete(url, this.headerConfig())
                 .then(res => {
                     console.log(res.data.message)
                     this.getUserId()
@@ -135,18 +133,6 @@ export default class Profile extends React.Component {
     componentDidMount() {
         this.getUserId()
     }
-
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (this.state.image !== prevState.image) {
-    //         const image = localStorage.getItem("image");
-    //         if (image) {
-    //             const imageUrl = "http://localhost:9090/image/user/" + image;
-    //             this.setState({
-    //                 imageUrl: imageUrl
-    //             });
-    //         }
-    //     }
-    // }
 
     render() {
         return (
@@ -264,7 +250,6 @@ export default class Profile extends React.Component {
                                             <h5 class="mt-4">{this.state.user.nama_user}</h5>
                                             <span class="text-black-50 mt-1">{this.state.user.username}</span>
                                             <p class="text-black-50 mt-1">{this.state.user.role} | Wikusama Cafe</p>
-                                            {/* <span class="text-black-100">{this.state.customer.address}</span> */}
                                         </div>
                                     </div>
                                     <div class="col-md-8">
@@ -283,11 +268,11 @@ export default class Profile extends React.Component {
                                                     <Form.Control type="email" name="username" placeholder="Enter your username"
                                                         value={this.state.username} onChange={this.handleChange} required />
                                                 </Form.Group>
-                                                {/* <Form.Group className="mb-2" controlId="password">
+                                                <Form.Group className="mb-2" controlId="password">
                                                     <Form.Label>Password</Form.Label>
                                                     <Form.Control type="password" name="password" placeholder="Enter your password"
-                                                        value={this.state.password} onChange={this.handleChange} required />
-                                                </Form.Group> */}
+                                                        value={this.state.password} onChange={this.handleChange} />
+                                                </Form.Group>
                                                 <Form.Group className="mb-2" controlId="role">
                                                     <label for="exampleSelectGender">Role</label><br />
                                                     <select type="text" name="role" class="form-control" id="exampleSelectGender"

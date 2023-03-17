@@ -68,7 +68,7 @@ export default class Transaksi extends React.Component {
             let data = {
                 keyword: this.state.keyword
             }
-            axios.post(url, data)
+            axios.post(url, data, this.headerConfig())
                 .then(res => {
                     this.setState({
                         transaksi: res.data.transaksi,
@@ -106,7 +106,7 @@ export default class Transaksi extends React.Component {
         let url = "http://localhost:9090/transaksi/status/" + this.state.id_transaksi
         axios.post(url, form, this.headerConfig())
             .then(response => {
-                window.alert(response.data.message)
+                // window.alert(response.data.message)
                 this.getTransaksi()
                 this.handleColse()
             })
@@ -120,7 +120,7 @@ export default class Transaksi extends React.Component {
     Delete = (id) => {
         let url = "http://localhost:9090/transaksi/" + id
         if (window.confirm("Apakah anda yakin ingin menghapus data transaksi ini ?")) {
-            axios.delete(url)
+            axios.delete(url, this.headerConfig())
                 .then(res => {
                     console.log(res.data.message)
                     this.getTransaksi()
@@ -171,7 +171,7 @@ export default class Transaksi extends React.Component {
                                 value={this.state.keyword}
                                 onChange={e => this.setState({ keyword: e.target.value })}
                                 onKeyUp={e => this.handleSearch(e)}
-                                placeholder="Enter transaction's id / admin / customer / status"
+                                placeholder="Masukkan keyword pencarian"
                             />
                             <p className="text-danger mb-4">*Klik enter untuk mencari data</p>
                             {/* <div className="card"> */}
